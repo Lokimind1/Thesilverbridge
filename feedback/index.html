@@ -8,299 +8,117 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --ink:        #1a1510;
-    --warm-bg:    #faf7f2;
-    --accent:     #8b4513;
-    --gold:       #c4922a;
-    --muted:      #6b5a47;
-    --light-rule: #e0d5c5;
-    --highlight:  #f5ede0;
-    --radius:     10px;
-    --star-on:    #c4922a;
-    --star-off:   #ddd0bc;
+    --ink: #1a1510; --warm-bg: #faf7f2; --accent: #8b4513;
+    --gold: #c4922a; --muted: #6b5a47; --rule: #e0d5c5;
+    --highlight: #f5ede0; --radius: 10px;
   }
-
-  body {
-    font-family: 'Source Serif 4', Georgia, serif;
-    background: #f0ebe0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 32px 16px;
-  }
-
-  .card {
-    background: var(--warm-bg);
-    border-radius: 16px;
-    max-width: 540px;
-    width: 100%;
-    padding: 52px 48px 44px;
-    box-shadow: 0 2px 4px rgba(0,0,0,.04), 0 16px 48px rgba(0,0,0,.12);
-    border: 1px solid var(--light-rule);
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* top gold bar */
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--gold), var(--accent));
-  }
-
-  .book-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 600;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .book-label::before {
-    content: '';
-    display: inline-block;
-    width: 20px; height: 1px;
-    background: var(--gold);
-  }
-
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    color: var(--ink);
-    line-height: 1.2;
-    margin-bottom: 12px;
-    font-weight: 700;
-  }
-
-  .subtitle {
-    font-family: 'Source Serif 4', serif;
-    font-size: 15px;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-bottom: 36px;
-    font-style: italic;
-  }
-
-  /* ── Stars ── */
-  .field-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 500;
-    margin-bottom: 10px;
-    display: block;
-  }
-
+  body { font-family: 'Source Serif 4', Georgia, serif; background: #f0ebe0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 32px 16px; }
+  .card { background: var(--warm-bg); border-radius: 16px; max-width: 540px; width: 100%; padding: 52px 48px 44px; box-shadow: 0 2px 4px rgba(0,0,0,.04), 0 16px 48px rgba(0,0,0,.12); border: 1px solid var(--rule); position: relative; overflow: hidden; }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--gold), var(--accent)); }
+  .book-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .book-label::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--gold); }
+  h1 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--ink); line-height: 1.2; margin-bottom: 12px; font-weight: 700; }
+  .subtitle { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 36px; font-style: italic; }
+  .field-label { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 10px; display: block; }
   .stars-wrap { display: flex; gap: 6px; margin-bottom: 6px; }
-
-  .star-btn {
-    background: none; border: none; cursor: pointer; padding: 0;
-    font-size: 38px; color: var(--star-off);
-    transition: color .12s, transform .1s;
-    line-height: 1;
-  }
-  .star-btn:hover, .star-btn.active { color: var(--star-on); transform: scale(1.12); }
-  .star-btn.hover-fill { color: var(--star-on); }
-
-  .rating-label {
-    font-family: 'Source Serif 4', serif;
-    font-size: 13px; font-style: italic;
-    color: var(--gold);
-    min-height: 20px; margin-bottom: 26px;
-    transition: opacity .2s;
-  }
-
-  .rule { border: none; border-top: 1px solid var(--light-rule); margin: 0 0 26px; }
-
-  textarea {
-    width: 100%;
-    border: 1.5px solid var(--light-rule);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    font-family: 'Source Serif 4', serif;
-    font-size: 15px;
-    color: var(--ink);
-    background: var(--warm-bg);
-    resize: vertical;
-    min-height: 110px;
-    line-height: 1.7;
-    transition: border-color .15s, box-shadow .15s;
-    outline: none;
-  }
+  .star { background: none; border: none; cursor: pointer; padding: 0; font-size: 38px; color: #ddd0bc; transition: color .12s, transform .1s; line-height: 1; }
+  .star.lit { color: var(--gold); transform: scale(1.12); }
+  .rating-label { font-size: 13px; font-style: italic; color: var(--gold); min-height: 20px; margin-bottom: 26px; }
+  hr { border: none; border-top: 1px solid var(--rule); margin: 0 0 26px; }
+  textarea { width: 100%; border: 1.5px solid var(--rule); border-radius: var(--radius); padding: 14px 16px; font-family: 'Source Serif 4', serif; font-size: 15px; color: var(--ink); background: var(--warm-bg); resize: vertical; min-height: 110px; line-height: 1.7; outline: none; transition: border-color .15s, box-shadow .15s; }
   textarea::placeholder { color: #c0b09a; font-style: italic; }
   textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(196,146,42,.10); }
-
-  .fields-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-  .field-group { display: flex; flex-direction: column; gap: 5px; }
-  .field-group label {
-    font-family: 'Inter', sans-serif;
-    font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--muted); font-weight: 500;
-  }
-  input[type="text"], input[type="email"] {
-    border: 1.5px solid var(--light-rule);
-    border-radius: 7px; padding: 10px 13px;
-    font-family: 'Source Serif 4', serif; font-size: 14px; color: var(--ink);
-    background: var(--warm-bg); outline: none;
-    transition: border-color .15s, box-shadow .15s;
-  }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .fg { display: flex; flex-direction: column; gap: 5px; }
+  .fg label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  input[type="text"], input[type="email"] { border: 1.5px solid var(--rule); border-radius: 7px; padding: 10px 13px; font-family: 'Source Serif 4', serif; font-size: 14px; color: var(--ink); background: var(--warm-bg); outline: none; width: 100%; transition: border-color .15s, box-shadow .15s; }
   input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(196,146,42,.10); }
   input::placeholder { color: #c0b09a; }
-
-  .submit-btn {
-    width: 100%; margin-top: 26px; padding: 15px;
-    background: var(--ink); color: var(--warm-bg);
-    border: none; border-radius: var(--radius);
-    font-family: 'Inter', sans-serif; font-size: 13px;
-    font-weight: 600; letter-spacing: .07em;
-    cursor: pointer; transition: background .2s, transform .1s;
-  }
-  .submit-btn:hover { background: var(--accent); }
-  .submit-btn:active { transform: scale(.99); }
-
-  .privacy {
-    font-family: 'Inter', sans-serif;
-    font-size: 11px; color: #b0a090;
-    text-align: center; margin-top: 14px; line-height: 1.5;
-  }
-
-  /* ── Thank you ── */
-  .thank-you { display: none; text-align: center; padding: 16px 0; }
-  .thank-you .icon {
-    width: 60px; height: 60px; border-radius: 50%;
-    background: var(--highlight);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 22px;
-    font-size: 26px; color: var(--gold);
-  }
-  .thank-you h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px; color: var(--ink); margin-bottom: 14px;
-  }
-  .thank-you p {
-    font-family: 'Source Serif 4', serif;
-    font-size: 15px; color: var(--muted); line-height: 1.7;
-  }
-  .thank-you .sign {
-    margin-top: 24px; font-style: italic;
-    color: var(--gold); font-size: 15px;
-    font-family: 'Playfair Display', serif;
-  }
-
-  @media (max-width: 480px) {
-    .card { padding: 40px 24px 32px; }
-    .fields-row { grid-template-columns: 1fr; }
-    h1 { font-size: 24px; }
-  }
+  .btn { width: 100%; margin-top: 26px; padding: 15px; background: var(--ink); color: var(--warm-bg); border: none; border-radius: var(--radius); font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: .07em; cursor: pointer; transition: background .2s; }
+  .btn:hover:not(:disabled) { background: var(--accent); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; }
+  .privacy { font-family: 'Inter', sans-serif; font-size: 11px; color: #b0a090; text-align: center; margin-top: 14px; line-height: 1.5; }
+  .ty { display: none; text-align: center; padding: 16px 0; }
+  .ty .ico { width: 60px; height: 60px; border-radius: 50%; background: var(--highlight); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; font-size: 28px; color: var(--gold); }
+  .ty h2 { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--ink); margin-bottom: 14px; }
+  .ty p { font-size: 15px; color: var(--muted); line-height: 1.7; }
+  .ty .sig { margin-top: 24px; font-style: italic; color: var(--gold); font-family: 'Playfair Display', serif; }
+  @media (max-width: 480px) { .card { padding: 40px 24px 32px; } .row { grid-template-columns: 1fr; } h1 { font-size: 24px; } }
 </style>
 </head>
 <body>
 <div class="card">
-
-  <div id="form-section">
+  <div id="fs">
     <div class="book-label">The Silver Bridge</div>
-
     <h1>Did it land the way we hoped?</h1>
-    <p class="subtitle">
-      Two minutes of honest feedback shapes the next edition — and means more to us than we can say here.
-    </p>
-
+    <p class="subtitle">Two minutes of honest feedback shapes the next edition — and means more to us than we can say here.</p>
     <label class="field-label">Your overall rating</label>
     <div class="stars-wrap" id="stars">
-      <button class="star-btn" data-val="1" aria-label="1 star">★</button>
-      <button class="star-btn" data-val="2" aria-label="2 stars">★</button>
-      <button class="star-btn" data-val="3" aria-label="3 stars">★</button>
-      <button class="star-btn" data-val="4" aria-label="4 stars">★</button>
-      <button class="star-btn" data-val="5" aria-label="5 stars">★</button>
+      <button class="star" data-val="1" aria-label="1 star">★</button>
+      <button class="star" data-val="2" aria-label="2 stars">★</button>
+      <button class="star" data-val="3" aria-label="3 stars">★</button>
+      <button class="star" data-val="4" aria-label="4 stars">★</button>
+      <button class="star" data-val="5" aria-label="5 stars">★</button>
     </div>
-    <div class="rating-label" id="rating-label">&nbsp;</div>
-
-    <hr class="rule">
-
+    <div class="rating-label" id="rl">&nbsp;</div>
+    <hr>
     <label class="field-label" for="comment">Your thoughts (optional)</label>
     <textarea id="comment" placeholder="What resonated most? What could be clearer? Any chapter that surprised you?"></textarea>
-
-    <div class="fields-row">
-      <div class="field-group">
+    <div class="row">
+      <div class="fg">
         <label for="fname">First name</label>
         <input type="text" id="fname" placeholder="Your name" autocomplete="given-name">
       </div>
-      <div class="field-group">
+      <div class="fg">
         <label for="email">Email <span style="font-weight:300;text-transform:none;letter-spacing:0;font-size:10px">(optional)</span></label>
         <input type="email" id="email" placeholder="you@email.com" autocomplete="email">
       </div>
     </div>
-
-    <button class="submit-btn" onclick="handleSubmit()">Send My Feedback →</button>
-
+    <button class="btn" id="btn" onclick="handleSubmit()">Send My Feedback →</button>
     <p class="privacy">Your email is never shared or used for marketing.<br>Anonymous responses are equally welcome.</p>
   </div>
-
-  <div class="thank-you" id="thank-you">
-    <div class="icon">✦</div>
+  <div class="ty" id="ty">
+    <div class="ico">✦</div>
     <h2>Thank you — genuinely.</h2>
-    <p>
-      Your feedback has been received.<br>
-      Every response is read personally and shapes the work ahead.
-    </p>
-    <p class="sign">— The Authors</p>
+    <p>Your feedback has been received.<br>Every response is read personally and shapes the work ahead.</p>
+    <p class="sig">— The Authors</p>
   </div>
-
 </div>
 <script>
-  const LABELS = ['','Not quite for me','It was okay','A solid read','Really enjoyed it','Loved every page'];
-  let rating = 0;
-  const stars = document.querySelectorAll('.star-btn');
-  const label = document.getElementById('rating-label');
+const LABELS = ['','Not quite for me','It was okay','A solid read','Really enjoyed it','Loved every page'];
+let rating = 0;
+const stars = document.querySelectorAll('.star');
+const rl    = document.getElementById('rl');
 
-  function setStars(n, hover=false) {
-    stars.forEach((s,i) => {
-      s.classList.toggle('active', !hover && i < n);
-      s.classList.toggle('hover-fill', hover && i < n);
+function setStars(n) {
+  stars.forEach((s,i) => s.classList.toggle('lit', i < n));
+  rl.textContent = LABELS[n] || '\u00a0';
+  rl.style.color = '';
+}
+stars.forEach(s => {
+  s.addEventListener('click',      () => { rating = +s.dataset.val; setStars(rating); });
+  s.addEventListener('mouseenter', () => setStars(+s.dataset.val));
+  s.addEventListener('mouseleave', () => setStars(rating));
+});
+
+async function handleSubmit() {
+  if (!rating) { rl.textContent = 'Please select a rating to continue.'; rl.style.color = '#b03020'; return; }
+  const btn     = document.getElementById('btn');
+  const email   = document.getElementById('email').value.trim();
+  const name    = document.getElementById('fname').value.trim();
+  const comment = document.getElementById('comment').value.trim();
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try {
+    await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rating, comment, name, email })
     });
-    label.textContent = LABELS[n] || '\u00a0';
-  }
-
-  stars.forEach(s => {
-    s.addEventListener('click', () => { rating = +s.dataset.val; setStars(rating); });
-    s.addEventListener('mouseenter', () => setStars(+s.dataset.val, true));
-    s.addEventListener('mouseleave', () => setStars(rating));
-  });
-
-  function handleSubmit() {
-    if (!rating) {
-      label.textContent = 'Please select a rating to continue.';
-      label.style.color = '#c0392b'; return;
-    }
-    const payload = {
-      rating,
-      comment: document.getElementById('comment').value.trim(),
-      name:    document.getElementById('fname').value.trim(),
-      email:   document.getElementById('email').value.trim(),
-      ts:      new Date().toISOString()
-    };
-    // To connect to Google Forms, uncomment and fill your form's action URL + entry IDs:
-    // const fd = new FormData();
-    // fd.append('entry.XXXXXXXXX', payload.rating);
-    // fd.append('entry.YYYYYYYYY', payload.comment);
-    // fd.append('entry.ZZZZZZZZZ', payload.name);
-    // fd.append('entry.WWWWWWWWW', payload.email);
-    // fetch('https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse', { method:'POST', mode:'no-cors', body:fd });
-    console.log('Feedback:', payload);
-    document.getElementById('form-section').style.display = 'none';
-    document.getElementById('thank-you').style.display    = 'block';
-  }
+  } catch(e) { console.log('note:', e.message); }
+  document.getElementById('fs').style.display = 'none';
+  document.getElementById('ty').style.display  = 'block';
+}
 </script>
 </body>
 </html>
